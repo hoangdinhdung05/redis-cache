@@ -1,0 +1,60 @@
+spring:
+  application:
+    name: backend-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3307/jwt_auth_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: ${DB_USER:root}
+    password: ${DB_PASS:123456789}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      timeout: 60000ms
+      lettuce:
+        pool:
+          max-active: 20
+          max-wait: -1ms
+          max-idle: 10
+          min-idle: 0
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+jwt:
+  secret: ${JWT_SECRET:mySecretKey1234567890123456789012345678901234567890}
+  expiration: 3600000
+  refresh-expiration: 86400000
+
+logging:
+  level:
+    root: INFO
+    com.example: DEBUG
+
+app:
+  redis:
+    key-prefix: "jwt-auth:"
+    session-prefix: "session:"
+    permission-prefix: "permissions:"
+    token-prefix: "token:"
+    refresh-prefix: "refresh:"
+    cache-ttl:
+      session: 86400
+      permission: 43200
+      token: 86400
+      refresh: 604800
