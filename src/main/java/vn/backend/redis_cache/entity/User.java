@@ -51,11 +51,11 @@ public class User extends BaseEntity implements UserDetails {
 
         // Thêm roles
         roles.forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName()));
 
             // Thêm permissions
             role.getPermissions().forEach(permission ->
-                    authorities.add(new SimpleGrantedAuthority(permission.getName()))
+                    authorities.add(new SimpleGrantedAuthority(permission.getPermissionName()))
             );
         });
 
@@ -95,14 +95,14 @@ public class User extends BaseEntity implements UserDetails {
     // Helper methods
     public Set<String> getRoleNames() {
         return roles.stream()
-                .map(Role::getName)
+                .map(Role::getRoleName)
                 .collect(Collectors.toSet());
     }
 
     public Set<String> getPermissionNames() {
         return roles.stream()
                 .flatMap(role -> role.getPermissions().stream())
-                .map(Permission::getName)
+                .map(Permission::getPermissionName)
                 .collect(Collectors.toSet());
     }
 }

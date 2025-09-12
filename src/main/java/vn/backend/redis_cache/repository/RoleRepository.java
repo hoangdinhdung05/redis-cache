@@ -16,14 +16,14 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
      * @param name the name of the role
      * @return Optional of Role
      */
-    Optional<Role> findByName(String name);
+    Optional<Role> findByRoleName(String name);
 
     /**
      * Check if role exists by name
      * @param name the name of the role
      * @return true if role exists, false otherwise
      */
-    boolean existsByName(String name);
+    boolean existsByRoleName(String name);
 
     /**
      * Find role by name with permissions
@@ -34,9 +34,9 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
             SELECT r
             FROM Role r
             JOIN FETCH r.permissions p
-            WHERE r.name = :name
+            WHERE r.roleName = :name
             """)
-    Optional<Role> findByNameWithPermissions(@Param("name") String name);
+    Optional<Role> findByRoleNameWithPermissions(@Param("name") String name);
 
     /**
      * Find roles by names with permissions
@@ -47,7 +47,7 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
             SELECT DISTINCT r
             FROM Role r
             JOIN FETCH r.permissions p
-            WHERE r.name IN :names
+            WHERE r.roleName IN :names
             """)
     Set<Role> findByNamesWithPermissions(@Param("names") Set<String> names);
 }

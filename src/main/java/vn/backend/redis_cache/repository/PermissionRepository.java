@@ -16,14 +16,14 @@ public interface PermissionRepository extends JpaRepository<Permission, Long> {
      * @param name the name of the permission
      * @return Optional of Permission
      */
-    Optional<Permission> findByName(String name);
+    Optional<Permission> findByPermissionName(String name);
 
     /**
      * Check if permission exists by name
      * @param name the name of the permission
      * @return true if permission exists, false otherwise
      */
-    boolean existsByName(String name);
+    boolean existsByPermissionName(String name);
 
     /**
      * Find permissions by resource
@@ -46,5 +46,4 @@ public interface PermissionRepository extends JpaRepository<Permission, Long> {
             """)
     Optional<Permission> findByResourceAndAction(@Param("resource") String resource,
                                                  @Param("action") String action);
-
 }

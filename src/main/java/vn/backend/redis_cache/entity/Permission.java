@@ -14,8 +14,8 @@ import java.util.Set;
 @Builder
 public class Permission extends BaseEntity {
 
-    @Column(name = "name", unique = true, nullable = false, length = 100)
-    private String name;
+    @Column(name = "permission_name", unique = true, nullable = false, length = 100)
+    private String permissionName;
 
     @Column(name = "resource", nullable = false, length = 50)
     private String resource;
@@ -34,7 +34,7 @@ public class Permission extends BaseEntity {
     public String toString() {
         return "Permission{" +
                 "id=" + getId() +
-                ", name='" + name + '\'' +
+                ", name='" + permissionName + '\'' +
                 ", resource='" + resource + '\'' +
                 ", action='" + action + '\'' +
                 '}';

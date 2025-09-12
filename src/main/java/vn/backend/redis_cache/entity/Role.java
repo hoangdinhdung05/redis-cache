@@ -14,8 +14,8 @@ import java.util.Set;
 @Builder
 public class Role extends BaseEntity {
 
-    @Column(name = "name", unique = true, nullable = false, length = 50)
-    private String name;
+    @Column(name = "role_name", unique = true, nullable = false, length = 50)
+    private String roleName;
 
     @Column(name = "description")
     private String description;
@@ -37,7 +37,7 @@ public class Role extends BaseEntity {
     public String toString() {
         return "Role{" +
                 "id=" + getId() +
-                ", name='" + name + '\'' +
+                ", name='" + roleName + '\'' +
                 ", description='" + description + '\'' +
                 '}';
     }
