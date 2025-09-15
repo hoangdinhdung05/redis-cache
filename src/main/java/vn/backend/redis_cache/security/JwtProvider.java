@@ -71,6 +71,14 @@ public class JwtProvider {
         return (List<String>) claims.get("roles");
     }
 
+    public long getExpirationFromToken(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.getExpiration().getTime() - System.currentTimeMillis();
+    }
 
     //========== PRIVATE METHOD ==========//
     private String buildToken(UserDetails userPrincipal) {

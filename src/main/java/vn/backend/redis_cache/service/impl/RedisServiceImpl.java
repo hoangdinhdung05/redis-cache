@@ -114,7 +114,7 @@ public class RedisServiceImpl implements RedisService {
     @Override
     public boolean existsKey(String key) {
         try {
-            Boolean result = redisTemplate.delete(key);
+            Boolean result = redisTemplate.hasKey(key);
             boolean exists = Boolean.TRUE.equals(result);
             log.info("Checking key exists:{} - Result: {}", key, exists);
             return true;
