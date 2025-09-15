@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vn.backend.redis_cache.dto.request.LoginRequest;
+import vn.backend.redis_cache.dto.request.RefreshTokenRequest;
 import vn.backend.redis_cache.dto.response.AuthResponse;
+import vn.backend.redis_cache.dto.response.RefreshTokenResponse;
 import vn.backend.redis_cache.dto.response.ResponseData;
 import vn.backend.redis_cache.service.AuthService;
 
@@ -28,5 +30,14 @@ public class AuthController {
                 HttpStatus.OK.value(),
                 response
         ));
+    }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequest refreshToken) {
+        log.info("User refresh-token");
+        RefreshTokenResponse response = authService.refreshToken(refreshToken);
+        return ResponseEntity.ok(new ResponseData<>(
+                HttpStatus.OK.value(),
+                response));
     }
 }

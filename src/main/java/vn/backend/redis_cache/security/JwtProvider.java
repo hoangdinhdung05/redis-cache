@@ -11,9 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
@@ -25,9 +23,21 @@ public class JwtProvider {
     @Value("${jwt.expiration}")
     private long expiration;
 
+    @Value("${jwt.refresh-expiration}")
+    private long refreshExpiration;
+
     public String generateAccessToken(Authentication authentication) {
         UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
         return buildToken(userPrincipal);
+    }
+
+    public String generateRefreshToken(String username) {
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + refreshExpiration))
+                .signWith(key(), SignatureAlgorithm.HS256)
+                .compact();
     }
 
     public boolean validateToken(String token) {
@@ -64,15 +74,17 @@ public class JwtProvider {
 
     //========== PRIVATE METHOD ==========//
     private String buildToken(UserDetails userPrincipal) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("roles", userPrincipal.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+//        Map<String, Object> claims = new HashMap<>();
+//        claims.put("roles", userPrincipal.getAuthorities().stream()
+//                .map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
 
         return Jwts.builder()
                 .setSubject(userPrincipal.getUsername())
-                .setExpiration(new Date((new Date()).getTime() + expiration))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .setIssuedAt(new Date())
-                .setClaims(claims)
+                .claim("roles", userPrincipal.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList()))
                 .signWith(key(), SignatureAlgorithm.HS256)
                 .compact();
     }
